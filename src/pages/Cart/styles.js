@@ -66,7 +66,7 @@ export const ProductTable = styled.table`
     input {
       border: 1px solid #ddd;
       border-radius: 4px;
-      margin: 0 8px
+      margin: 0 8px;
       color: #666;
       padding: 6px;
       width: 50px;
@@ -76,7 +76,7 @@ export const ProductTable = styled.table`
   button {
     background: none;
     border: 0;
-    padding: px;
+    padding: 6px;
   }
 `;
 
