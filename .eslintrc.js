@@ -24,5 +24,6 @@ module.exports = {
     'react/prefer-stateless-function': [0, { ignorePureComponents: false }],
     'react/state-in-constructor': 'off',
     'react/static-property-placement': 'off',
+    'no-console': ['error', { allow: ['tron'] }],
   },
 };

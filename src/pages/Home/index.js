@@ -1,114 +1,62 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { MdShoppingCart } from 'react-icons/md';
+import api from '../../services/api';
+import { formatPrice } from '../../util/format';
 
 import { ProductList } from './styles';
 
-export default function Home() {
-  return (
-    <>
+class Home extends Component {
+  state = {
+    products: [],
+  };
+
+  async componentDidMount() {
+    const response = await api.get('products');
+
+    const data = response.data.map(product => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }));
+
+    this.setState({ products: data });
+  }
+
+  handleAddProduct = product => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    });
+  };
+
+  render() {
+    const { products } = this.state;
+
+    return (
       <ProductList>
-        <li>
-          <img
-            src="https://imgcentauro-a.akamaihd.net/900x900/9234417O/tenis-new-balance-ml501-masculino-img.jpg"
-            alt="Tênis"
-          />
-          <strong>Tênis top</strong>
-          <span>R$ 145,00</span>
+        {products.map(product => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
 
-          <button type="button">
-            <div>
-              <MdShoppingCart size={16} color="#FFF" /> 3
-            </div>
+            <button
+              type="button"
+              onClick={() => this.handleAddProduct(product)}
+            >
+              <div>
+                <MdShoppingCart size={16} color="#FFF" /> 3
+              </div>
 
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
-
-        <li>
-          <img
-            src="https://imgcentauro-a.akamaihd.net/900x900/9234417O/tenis-new-balance-ml501-masculino-img.jpg"
-            alt="Tênis"
-          />
-          <strong>Tênis top</strong>
-          <span>R$ 145,00</span>
-
-          <button type="button">
-            <div>
-              <MdShoppingCart size={16} color="#FFF" /> 3
-            </div>
-
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
-
-        <li>
-          <img
-            src="https://imgcentauro-a.akamaihd.net/900x900/9234417O/tenis-new-balance-ml501-masculino-img.jpg"
-            alt="Tênis"
-          />
-          <strong>Tênis top</strong>
-          <span>R$ 145,00</span>
-
-          <button type="button">
-            <div>
-              <MdShoppingCart size={16} color="#FFF" /> 3
-            </div>
-
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
-
-        <li>
-          <img
-            src="https://imgcentauro-a.akamaihd.net/900x900/9234417O/tenis-new-balance-ml501-masculino-img.jpg"
-            alt="Tênis"
-          />
-          <strong>Tênis top</strong>
-          <span>R$ 145,00</span>
-
-          <button type="button">
-            <div>
-              <MdShoppingCart size={16} color="#FFF" /> 3
-            </div>
-
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
-
-        <li>
-          <img
-            src="https://imgcentauro-a.akamaihd.net/900x900/9234417O/tenis-new-balance-ml501-masculino-img.jpg"
-            alt="Tênis"
-          />
-          <strong>Tênis top</strong>
-          <span>R$ 145,00</span>
-
-          <button type="button">
-            <div>
-              <MdShoppingCart size={16} color="#FFF" /> 3
-            </div>
-
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
-
-        <li>
-          <img
-            src="https://imgcentauro-a.akamaihd.net/900x900/9234417O/tenis-new-balance-ml501-masculino-img.jpg"
-            alt="Tênis"
-          />
-          <strong>Tênis top</strong>
-          <span>R$ 145,00</span>
-
-          <button type="button">
-            <div>
-              <MdShoppingCart size={16} color="#FFF" /> 3
-            </div>
-
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
+              <span>ADICIONAR AO CARRINHO</span>
+            </button>
+          </li>
+        ))}
       </ProductList>
-    </>
-  );
+    );
+  }
 }
+
+export default connect()(Home);
